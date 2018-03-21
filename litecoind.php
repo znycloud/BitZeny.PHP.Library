@@ -1,6 +1,6 @@
 <?php
 /**
- * Litecoin classes
+ * Litecoind classes
  *
  * By Mark Mikkelson - All rights reversed http://www.unlicense.org/ (public domain)
  * This is based largely on Mike Gogulski's Bitcoin library https://github.com/mikegogulski/bitcoin-php  (nearly entirely)
