@@ -5,22 +5,22 @@
  * By Mark Mikkelson - All rights reversed http://www.unlicense.org/ (public domain)
  * This is based largely on Mike Gogulski's Bitcoin library https://github.com/mikegogulski/bitcoin-php  (nearly entirely)
  * If you use this library and it helps you and would like to show your appreciation/support
- * You can donate Litecoins to address LPfr9bqMZ8j4Gu9HfT6cHdiiVxbvuonPdf   
+ * You can donate bitzeny to address ZdYq9qjbj6D9e6d4UfjpAr1AxpFewAtNcU   
  * They would be greatly appreciated. Thanks!
  *
- * Available at https://github.com/MadCapsule
+ * Available at https://github.com/znycloud
  *
- * @author Mark Mikkelson - mark@madcapsule.co.uk
- * https://github.com/MadCapsule http://www.madcapsule.com
+ * @author znycloud - znycloud@mail.jp.ai
+ * https://github.com/znycloud http://bitzeny.cloud
  *
  *
  */
 
 /**
- * Litecoin utility functions class
- * @author Mark Mikkelson
+ * Bitcoin utility functions class
+ * @author znycloud
  * Based on Mike Gogulski's Bitcoin Exception class
- *  http://www.madcapsule.com/ 
+ *  http://bitzeny.cloud/ 
  *
  */
 
@@ -33,7 +33,7 @@ define("LITECOIN_ADDRESS_VERSION", "30");// this is a hex byte
  * Based on Mike Gogulski's Bitcoin Exception class
  *  http://www.madcapsule.com/
  */
-class Litecoin {
+class Bitcoind {
 
 /**
  * Litecoin client class for JSON-RPC-HTTP[S] calls
