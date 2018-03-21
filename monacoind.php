@@ -33,7 +33,7 @@ define("LITECOIN_ADDRESS_VERSION", "30");// this is a hex byte
  * Based on Mike Gogulski's Bitcoin Exception class
  *  http://www.madcapsule.com/
  */
-class Litecoind {
+class Monacoind {
 
 /**
  * Litecoin client class for JSON-RPC-HTTP[S] calls
