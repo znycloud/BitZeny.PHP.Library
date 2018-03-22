@@ -1,32 +1,32 @@
 <?php
 /**
- * Bitcoin classes
+ * BitZeny classes
  *
  * By Mike Gogulski - All rights reversed http://www.unlicense.org/ (public domain)
  *
- * If you find this library useful, your donation of Bitcoins to address
+ * If you find this library useful, your donation of BitZenys to address
  * 1E3d6EWLgwisXY2CWXDcdQQP2ivRN7e9r9 would be greatly appreciated. Thanks!
  *
  * PHPDoc is available at http://code.gogulski.com/
  *
  * @author Mike Gogulski - http://www.nostate.com/ http://www.gogulski.com/
- * @author theymos - theymos @ http://bitcoin.org/smf
+ * @author theymos - theymos @ http://bitzeny.org/smf
  */
 
-define("BITCOIN_ADDRESS_VERSION", "00");// this is a hex byte
+define("BITZENY_ADDRESS_VERSION", "00");// this is a hex byte
 /**
- * Bitcoin utility functions class
+ * BitZeny utility functions class
  *
  * @author theymos (functionality)
  * @author Mike Gogulski
  * 	http://www.gogulski.com/ http://www.nostate.com/
  *  (encapsulation, string abstraction, PHPDoc)
  */
-class Bitzenyd {
+class BitZenyd {
 
   /*
-   * Bitcoin utility functions by theymos
-   * Via http://www.bitcoin.org/smf/index.php?topic=1844.0
+   * BitZeny utility functions by theymos
+   * Via http://www.bitzeny.org/smf/index.php?topic=1844.0
    * hex input must be in uppercase, with no leading 0x
    */
   private static $hexchars = "0123456789ABCDEF";
@@ -85,7 +85,7 @@ class Bitzenyd {
 
     $return = "0";
     for ($i = 0; $i < strlen($base58); $i++) {
-      $current = (string) strpos(Bitcoin::$base58chars, $base58[$i]);
+      $current = (string) strpos(BitZeny::$base58chars, $base58[$i]);
       $return = (string) bcmul($return, "58", 0);
       $return = (string) bcadd($return, $current, 0);
     }
@@ -136,15 +136,15 @@ class Bitzenyd {
   }
 
   /**
-   * Convert a 160-bit Bitcoin hash to a Bitcoin address
+   * Convert a 160-bit BitZeny hash to a BitZeny address
    *
    * @author theymos
    * @param string $hash160
    * @param string $addressversion
-   * @return string Bitcoin address
+   * @return string BitZeny address
    * @access public
    */
-  public static function hash160ToAddress($hash160, $addressversion = BITCOIN_ADDRESS_VERSION) {
+  public static function hash160ToAddress($hash160, $addressversion = BITZENY_ADDRESS_VERSION) {
     $hash160 = $addressversion . $hash160;
     $check = pack("H*", $hash160);
     $check = hash("sha256", hash("sha256", $check, true));
@@ -154,11 +154,11 @@ class Bitzenyd {
   }
 
   /**
-   * Convert a Bitcoin address to a 160-bit Bitcoin hash
+   * Convert a BitZeny address to a 160-bit BitZeny hash
    *
    * @author theymos
    * @param string $addr
-   * @return string Bitcoin hash
+   * @return string BitZeny hash
    * @access public
    */
   public static function addressToHash160($addr) {
@@ -168,7 +168,7 @@ class Bitzenyd {
   }
 
   /**
-   * Determine if a string is a valid Bitcoin address
+   * Determine if a string is a valid BitZeny address
    *
    * @author theymos
    * @param string $addr String to test
@@ -176,7 +176,7 @@ class Bitzenyd {
    * @return boolean
    * @access public
    */
-  public static function checkAddress($addr, $addressversion = BITCOIN_ADDRESS_VERSION) {
+  public static function checkAddress($addr, $addressversion = BITZENY_ADDRESS_VERSION) {
     $addr = self::decodeBase58($addr);
     if (strlen($addr) != 50) {
       return false;
@@ -193,7 +193,7 @@ class Bitzenyd {
   }
 
   /**
-   * Convert the input to its 160-bit Bitcoin hash
+   * Convert the input to its 160-bit BitZeny hash
    *
    * @param string $data
    * @return string
@@ -205,7 +205,7 @@ class Bitzenyd {
   }
 
   /**
-   * Convert a Bitcoin public key to a 160-bit Bitcoin hash
+   * Convert a BitZeny public key to a 160-bit BitZeny hash
    *
    * @param string $pubkey
    * @return string
@@ -231,12 +231,12 @@ class Bitzenyd {
 }
 
 /**
- * Exception class for BitcoinClient
+ * Exception class for BitZenyClient
  *
  * @author Mike Gogulski
  * 	http://www.gogulski.com/ http://www.nostate.com/
  */
-class BitcoinClientException extends ErrorException {
+class BitZenyClientException extends ErrorException {
   // Redefine the exception so message isn't optional
   public function __construct($message, $code = 0, $severity = E_USER_NOTICE, Exception $previous = null) {
     parent::__construct($message, $code, $severity, $previous);
@@ -251,24 +251,24 @@ require_once(dirname(__FILE__) . "/includes/xmlrpc.inc");
 require_once(dirname(__FILE__) . "/includes/jsonrpc.inc");
 
 /**
- * Bitcoin client class for access to a Bitcoin server via JSON-RPC-HTTP[S]
+ * BitZeny client class for access to a BitZeny server via JSON-RPC-HTTP[S]
  *
- * Implements the methods documented at https://www.bitcoin.org/wiki/doku.php?id=api
+ * Implements the methods documented at https://www.bitzeny.org/wiki/doku.php?id=api
  *
  * @version 0.3.19
  * @author Mike Gogulski
  * 	http://www.gogulski.com/ http://www.nostate.com/
  */
-class BitcoinClient extends jsonrpc_client {
+class BitZenyClient extends jsonrpc_client {
 
   /**
-   * Create a jsonrpc_client object to talk to the bitcoin server and return it,
+   * Create a jsonrpc_client object to talk to the bitzeny server and return it,
    * or false on failure.
    *
    * @param string $scheme
    * 	"http" or "https"
    * @param string $username
-   * 	User name to use in connection the Bitcoin server's JSON-RPC interface
+   * 	User name to use in connection the BitZeny server's JSON-RPC interface
    * @param string $password
    * 	Server password
    * @param string $address
@@ -283,21 +283,21 @@ class BitcoinClient extends jsonrpc_client {
    * 	2 = log transmitted messages also
    * @return jsonrpc_client
    * @access public
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function __construct($scheme, $username, $password, $address = "localhost", $port = 8332, $certificate_path = '', $debug_level = 0) {
     $scheme = strtolower($scheme);
     if ($scheme != "http" && $scheme != "https")
-      throw new BitcoinClientException("Scheme must be http or https");
+      throw new BitZenyClientException("Scheme must be http or https");
     if (empty($username))
-      throw new BitcoinClientException("Username must be non-blank");
+      throw new BitZenyClientException("Username must be non-blank");
     if (empty($password))
-      throw new BitcoinClientException("Password must be non-blank");
+      throw new BitZenyClientException("Password must be non-blank");
     $port = (string) $port;
     if (!$port || empty($port) || !is_numeric($port) || $port < 1 || $port > 65535 || floatval($port) != intval($port))
-      throw new BitcoinClientException("Port must be an integer and between 1 and 65535");
+      throw new BitZenyClientException("Port must be an integer and between 1 and 65535");
     if (!empty($certificate_path) && !is_readable($certificate_path))
-      throw new BitcoinClientException("Certificate file " . $certificate_path . " is not readable");
+      throw new BitZenyClientException("Certificate file " . $certificate_path . " is not readable");
     $uri = $scheme . "://" . $username . ":" . $password . "@" . $address . ":" . $port . "/";
     parent::__construct($uri);
     $this->setDebug($debug_level);
@@ -310,7 +310,7 @@ class BitcoinClient extends jsonrpc_client {
   }
 
   /**
-   * Test if the connection to the Bitcoin JSON-RPC server is working
+   * Test if the connection to the BitZeny JSON-RPC server is working
    *
    * The check is done by calling the server's getinfo() method and checking
    * for a fault.
@@ -322,14 +322,14 @@ class BitcoinClient extends jsonrpc_client {
   public function can_connect() {
     try {
       $r = $this->getinfo();
-    } catch (BitcoinClientException $e) {
+    } catch (BitZenyClientException $e) {
       return $e->getMessage();
     }
     return true;
   }
 
   /**
-   * Convert a Bitcoin server query argument to a jsonrpcval
+   * Convert a BitZeny server query argument to a jsonrpcval
    *
    * @param mixed $argument
    * @return jsonrpcval
@@ -367,12 +367,12 @@ class BitcoinClient extends jsonrpc_client {
    * @param string $message
    * @param mixed $args, ...
    * @return mixed
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @see xmlrpc.inc:php_xmlrpc_decode()
    */
   public function query($message) {
     if (!$message || empty($message))
-      throw new BitcoinClientException("Bitcoin client query requires a message");
+      throw new BitZenyClientException("BitZeny client query requires a message");
     $msg = new jsonrpcmsg($message);
     if (func_num_args() > 1) {
       for ($i = 1; $i < func_num_args(); $i++) {
@@ -381,13 +381,13 @@ class BitcoinClient extends jsonrpc_client {
     }
     $response = $this->send($msg);
     if ($response->faultCode()) {
-      throw new BitcoinClientException($response->faultString());
+      throw new BitZenyClientException($response->faultString());
     }
     return php_xmlrpc_decode($response->value());
   }
 
   /*
-   * The following functions implement the Bitcoin RPC API as documented at https://www.bitcoin.org/wiki/doku.php?id=api
+   * The following functions implement the BitZeny RPC API as documented at https://www.bitzeny.org/wiki/doku.php?id=api
    */
 
   /**
@@ -396,11 +396,11 @@ class BitcoinClient extends jsonrpc_client {
    *
    * @param string $destination
    * @return mixed Nothing, or an error array
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function backupwallet($destination) {
     if (!$destination || empty($destination))
-      throw new BitcoinClientException("backupwallet requires a destination");
+      throw new BitZenyClientException("backupwallet requires a destination");
     return $this->query("backupwallet", $destination);
   }
 
@@ -412,12 +412,12 @@ class BitcoinClient extends jsonrpc_client {
    *  total available balance is returned.
    * @param integer $minconf If specified, only transactions with at least
    *  $minconf confirmations will be included in the returned total.
-   * @return float Bitcoin balance
-   * @throws BitcoinClientException
+   * @return float BitZeny balance
+   * @throws BitZenyClientException
    */
   public function getbalance($account = NULL, $minconf = 1) {
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('getbalance requires a numeric minconf >= 0');
+      throw new BitZenyClientException('getbalance requires a numeric minconf >= 0');
     if ($account === NULL)
       return $this->query("getbalance");
     return $this->query("getbalance", $account, $minconf);
@@ -427,7 +427,7 @@ class BitcoinClient extends jsonrpc_client {
    * Returns the number of blocks in the longest block chain.
    *
    * @return integer Current block count
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function getblockcount() {
     return $this->query("getblockcount");
@@ -437,7 +437,7 @@ class BitcoinClient extends jsonrpc_client {
    * Returns the block number of the latest block in the longest block chain.
    *
    * @return integer Block number
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function getblocknumber() {
     return $this->query("getblocknumber");
@@ -447,7 +447,7 @@ class BitcoinClient extends jsonrpc_client {
    * Returns the number of connections to other nodes.
    *
    * @return integer Connection count
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function getconnectioncount() {
     return $this->query("getconnectioncount");
@@ -457,35 +457,35 @@ class BitcoinClient extends jsonrpc_client {
    * Returns the proof-of-work difficulty as a multiple of the minimum difficulty.
    *
    * @return float Difficulty
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function getdifficulty() {
     return $this->query("getdifficulty");
   }
 
   /**
-   * Returns boolean true if server is trying to generate bitcoins, false otherwise.
+   * Returns boolean true if server is trying to generate bitzenys, false otherwise.
    *
    * @return boolean Generation status
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function getgenerate() {
     return $this->query("getgenerate");
   }
 
   /**
-   * Tell Bitcoin server to generate Bitcoins or not, and how many processors
+   * Tell BitZeny server to generate BitZenys or not, and how many processors
    * to use.
    *
    * @param boolean $generate
    * @param integer $maxproc
    * 	Limit generation to $maxproc processors, unlimited if -1
    * @return mixed Nothing if successful, error array if not
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function setgenerate($generate = TRUE, $maxproc = -1) {
     if (!is_numeric($maxproc) || $maxproc < -1)
-      throw new BitcoinClientException('setgenerate: $maxproc must be numeric and >= -1');
+      throw new BitZenyClientException('setgenerate: $maxproc must be numeric and >= -1');
     return $this->query("setgenerate", $generate, $maxproc);
   }
 
@@ -493,7 +493,7 @@ class BitcoinClient extends jsonrpc_client {
    * Returns an array containing server information.
    *
    * @return array Server information
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function getinfo() {
     return $this->query("getinfo");
@@ -504,12 +504,12 @@ class BitcoinClient extends jsonrpc_client {
    *
    * @param string $address
    * @return string Account
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @since 0.3.17
    */
   public function getaccount($address) {
     if (!$address || empty($address))
-      throw new BitcoinClientException("getaccount requires an address");
+      throw new BitZenyClientException("getaccount requires an address");
     return $this->query("getaccount", $address);
   }
 
@@ -518,12 +518,12 @@ class BitcoinClient extends jsonrpc_client {
    *
    * @param string $address
    * @return string Label
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @deprecated Since 0.3.17
    */
   public function getlabel($address) {
     if (!$address || empty($address))
-      throw new BitcoinClientException("getlabel requires an address");
+      throw new BitZenyClientException("getlabel requires an address");
     return $this->query("getlabel", $address);
   }
 
@@ -534,12 +534,12 @@ class BitcoinClient extends jsonrpc_client {
    * @param string $address
    * @param string $account
    * @return NULL
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @since 0.3.17
    */
   public function setaccount($address, $account = "") {
     if (!$address || empty($address))
-      throw new BitcoinClientException("setaccount requires an address");
+      throw new BitZenyClientException("setaccount requires an address");
     return $this->query("setaccount", $address, $account);
   }
 
@@ -550,24 +550,24 @@ class BitcoinClient extends jsonrpc_client {
    * @param string $address
    * @param string $label
    * @return NULL
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @deprecated Since 0.3.17
    */
   public function setlabel($address, $label = "") {
     if (!$address || empty($address))
-      throw new BitcoinClientException("setlabel requires an address");
+      throw new BitZenyClientException("setlabel requires an address");
     return $this->query("setlabel", $address, $label);
   }
 
   /**
-   * Returns a new bitcoin address for receiving payments.
+   * Returns a new bitzeny address for receiving payments.
    *
    * If $account is specified (recommended), it is added to the address book so
    * payments received with the address will be credited to $account.
    *
    * @param string $account Label to apply to the new address
-   * @return string Bitcoin address
-   * @throws BitcoinClientException
+   * @return string BitZeny address
+   * @throws BitZenyClientException
    */
   public function getnewaddress($account = NULL) {
     if (!$account || empty($account))
@@ -580,17 +580,17 @@ class BitcoinClient extends jsonrpc_client {
    * $minconf confirmations.
    *
    * @param string $address
-   * 	Bitcoin address
+   * 	BitZeny address
    * @param integer $minconf
    * 	Minimum number of confirmations for transactions to be counted
-   * @return float Bitcoin total
-   * @throws BitcoinClientException
+   * @return float BitZeny total
+   * @throws BitZenyClientException
    */
   public function getreceivedbyaddress($address, $minconf = 1) {
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('getreceivedbyaddress requires a numeric minconf >= 0');
+      throw new BitZenyClientException('getreceivedbyaddress requires a numeric minconf >= 0');
     if (!$address || empty($address))
-      throw new BitcoinClientException("getreceivedbyaddress requires an address");
+      throw new BitZenyClientException("getreceivedbyaddress requires an address");
     return $this->query("getreceivedbyaddress", $address, $minconf);
   }
 
@@ -601,15 +601,15 @@ class BitcoinClient extends jsonrpc_client {
    * @param string $account
    * @param integer $minconf
    * 	Minimum number of confirmations for transactions to be counted
-   * @return float Bitcoin total
-   * @throws BitcoinClientException
+   * @return float BitZeny total
+   * @throws BitZenyClientException
    * @since 0.3.17
    */
   public function getreceivedbyaccount($account, $minconf = 1) {
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('getreceivedbyaccount requires a numeric minconf >= 0');
+      throw new BitZenyClientException('getreceivedbyaccount requires a numeric minconf >= 0');
     if (!$account || empty($account))
-      throw new BitcoinClientException("getreceivedbyaccount requires an account");
+      throw new BitZenyClientException("getreceivedbyaccount requires an account");
     return $this->query("getreceivedbyaccount", $account, $minconf);
   }
 
@@ -620,15 +620,15 @@ class BitcoinClient extends jsonrpc_client {
    * @param string $label
    * @param integer $minconf
    * 	Minimum number of confirmations for transactions to be counted
-   * @return float Bitcoin total
-   * @throws BitcoinClientException
+   * @return float BitZeny total
+   * @throws BitZenyClientException
    * @deprecated Since 0.3.17
    */
   public function getreceivedbylabel($label, $minconf = 1) {
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('getreceivedbylabel requires a numeric minconf >= 0');
+      throw new BitZenyClientException('getreceivedbylabel requires a numeric minconf >= 0');
     if (!$label || empty($label))
-      throw new BitcoinClientException("getreceivedbylabel requires a label");
+      throw new BitZenyClientException("getreceivedbylabel requires a label");
     return $this->query("getreceivedbylabel", $label, $minconf);
   }
 
@@ -637,7 +637,7 @@ class BitcoinClient extends jsonrpc_client {
    *
    * @param string $command
    * @return string Help text
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function help($command = NULL) {
     if (!$command || empty($command))
@@ -646,7 +646,7 @@ class BitcoinClient extends jsonrpc_client {
   }
 
   /**
-   * Return an array of arrays showing how many Bitcoins have been received by
+   * Return an array of arrays showing how many BitZenys have been received by
    * each address in the server's wallet.
    *
    * @param integer $minconf Minimum number of confirmations before payments are included.
@@ -656,16 +656,16 @@ class BitcoinClient extends jsonrpc_client {
    * 	"account" => the account of the receiving address
    * 	"amount" => total amount received by the address
    * 	"confirmations" => number of confirmations of the most recent transaction included
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function listreceivedbyaddress($minconf = 1, $includeempty = FALSE) {
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('listreceivedbyaddress requires a numeric minconf >= 0');
+      throw new BitZenyClientException('listreceivedbyaddress requires a numeric minconf >= 0');
     return $this->query("listreceivedbyaddress", $minconf, $includeempty);
   }
 
   /**
-   * Return an array of arrays showing how many Bitcoins have been received by
+   * Return an array of arrays showing how many BitZenys have been received by
    * each account in the server's wallet.
    *
    * @param integer $minconf
@@ -676,17 +676,17 @@ class BitcoinClient extends jsonrpc_client {
    * 	"account" => the label of the receiving address
    * 	"amount" => total amount received by the address
    * 	"confirmations" => number of confirmations of the most recent transaction included
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @since 0.3.17
    */
   public function listreceivedbyaccount($minconf = 1, $includeempty = FALSE) {
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('listreceivedbyaccount requires a numeric minconf >= 0');
+      throw new BitZenyClientException('listreceivedbyaccount requires a numeric minconf >= 0');
     return $this->query("listreceivedbyaccount", $minconf, $includeempty);
   }
 
   /**
-   * Return an array of arrays showing how many Bitcoins have been received by
+   * Return an array of arrays showing how many BitZenys have been received by
    * each label in the server's wallet.
    *
    * @param integer $minconf Minimum number of confirmations before payments are included.
@@ -695,12 +695,12 @@ class BitcoinClient extends jsonrpc_client {
    * 	"label" => the label of the receiving address
    * 	"amount" => total amount received by the address
    * 	"confirmations" => number of confirmations of the most recent transaction included
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @deprecated Since 0.3.17
    */
   public function listreceivedbylabel($minconf = 1, $includeempty = FALSE) {
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('listreceivedbylabel requires a numeric minconf >= 0');
+      throw new BitZenyClientException('listreceivedbylabel requires a numeric minconf >= 0');
     return $this->query("listreceivedbylabel", $minconf, $includeempty);
   }
 
@@ -709,21 +709,21 @@ class BitcoinClient extends jsonrpc_client {
    *
    * $amount is a real and is rounded to the nearest 0.01. Returns string "sent" on success.
    *
-   * @param string $address Destination Bitcoin address or IP address
+   * @param string $address Destination BitZeny address or IP address
    * @param float $amount Amount to send. Will be rounded to the nearest 0.01.
    * @param string $comment
    * @param string $comment_to
    * @return string Hexadecimal transaction ID on success.
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @todo Document the comment arguments better.
    */
   public function sendtoaddress($address, $amount, $comment = NULL, $comment_to = NULL) {
     if (!$address || empty($address))
-      throw new BitcoinClientException("sendtoaddress requires a destination address");
+      throw new BitZenyClientException("sendtoaddress requires a destination address");
     if (!$amount || empty($amount))
-      throw new BitcoinClientException("sendtoaddress requires an amount to send");
+      throw new BitZenyClientException("sendtoaddress requires an amount to send");
     if (!is_numeric($amount) || $amount <= 0)
-      throw new BitcoinClientException("sendtoaddress requires the amount sent to be a number > 0");
+      throw new BitZenyClientException("sendtoaddress requires the amount sent to be a number > 0");
     $amount = floatval($amount);
     if (!$comment && !$comment_to)
       return $this->query("sendtoaddress", $address, $amount);
@@ -733,28 +733,28 @@ class BitcoinClient extends jsonrpc_client {
   }
 
   /**
-   * Stop the Bitcoin server.
+   * Stop the BitZeny server.
    *
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function stop() {
     return $this->query("stop");
   }
 
   /**
-   * Check that $address looks like a proper Bitcoin address.
+   * Check that $address looks like a proper BitZeny address.
    *
-   * @param string $address String to test for validity as a Bitcoin address
+   * @param string $address String to test for validity as a BitZeny address
    * @return array An array containing:
    * 	"isvalid" => true or false
    * 	"ismine" => true if the address is in the server's wallet
-   * 	"address" => bitcoinaddress
+   * 	"address" => bitzenyaddress
    *  Note: ismine and address are only returned if the address is valid.
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function validateaddress($address) {
     if (!$address || empty($address))
-      throw new BitcoinClientException("validateaddress requires a Bitcoin address");
+      throw new BitZenyClientException("validateaddress requires a BitZeny address");
     return $this->query("validateaddress", $address);
   }
 
@@ -769,30 +769,30 @@ class BitcoinClient extends jsonrpc_client {
    *    "txid" => string The transaction ID
    *    "message" => string Transaction "comment" message
    *    "to" => string Transaction "to" message
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @since 0.3.18
    */
   public function gettransaction($txid) {
     if (!$txid || empty($txid) || strlen($txid) != 64 || !preg_match('/^[0-9a-fA-F]+$/', $txid))
-      throw new BitcoinClientException("gettransaction requires a valid hexadecimal transaction ID");
+      throw new BitZenyClientException("gettransaction requires a valid hexadecimal transaction ID");
     return $this->query("gettransaction", $txid);
   }
 
   /**
-   * Move bitcoins between accounts.
+   * Move bitzenys between accounts.
    *
    * @param string $fromaccount
-   *    Account to move from. If given as an empty string ("") or NULL, bitcoins will
+   *    Account to move from. If given as an empty string ("") or NULL, bitzenys will
    *    be moved from the wallet balance to the target account.
    * @param string $toaccount
    *     Account to move to
    * @param float $amount
    *     Amount to move
    * @param integer $minconf
-   *     Minimum number of confirmations on bitcoins being moved
+   *     Minimum number of confirmations on bitzenys being moved
    * @param string $comment
    *     Transaction comment
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @since 0.3.18
    */
   public function move($fromaccount = "", $toaccount, $amount, $minconf = 1, $comment = NULL) {
@@ -800,9 +800,9 @@ class BitcoinClient extends jsonrpc_client {
     if (!$toaccount) $toaccount = "";
 
     if (!$amount || !is_numeric($amount) || $amount <= 0)
-      throw new BitcoinClientException("move requires a from account, to account and numeric amount > 0");
+      throw new BitZenyClientException("move requires a from account, to account and numeric amount > 0");
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('move requires a numeric $minconf >= 0');
+      throw new BitZenyClientException('move requires a numeric $minconf >= 0');
     if (!$comment || empty($comment))
       return $this->query("move", $fromaccount, $toaccount, $amount, $minconf);
     return $this->query("move", $fromaccount, $toaccount, $amount, $minconf, $comment);
@@ -810,26 +810,26 @@ class BitcoinClient extends jsonrpc_client {
 
   /**
    * Send $amount from $account's balance to $toaddress. This method will fail
-   * if there is less than $amount bitcoins with $minconf confirmations in the
+   * if there is less than $amount bitzenys with $minconf confirmations in the
    * account's balance (unless $account is the empty-string-named default
    * account; it behaves like the sendtoaddress method). Returns transaction
    * ID on success.
    *
    * @param string $account Account to send from
-   * @param string $toaddress Bitcoin address to send to
+   * @param string $toaddress BitZeny address to send to
    * @param float $amount Amount to send
-   * @param integer $minconf Minimum number of confirmations on bitcoins being sent
+   * @param integer $minconf Minimum number of confirmations on bitzenys being sent
    * @param string $comment
    * @param string $comment_to
    * @return string Hexadecimal transaction ID
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @since 0.3.18
    */
   public function sendfrom($account, $toaddress, $amount, $minconf = 1, $comment = NULL, $comment_to = NULL) {
     if (is_null($account) || !$toaddress || empty($toaddress) || !$amount || !is_numeric($amount) || $amount <= 0)
-      throw new BitcoinClientException("sendfrom requires a from account, to account and numeric amount > 0");
+      throw new BitZenyClientException("sendfrom requires a from account, to account and numeric amount > 0");
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('sendfrom requires a numeric $minconf >= 0');
+      throw new BitZenyClientException('sendfrom requires a numeric $minconf >= 0');
     if (!$comment && !$comment_to)
       return $this->query("sendfrom", $account, $toaddress, $amount, $minconf);
     if (!$comment_to)
@@ -851,7 +851,7 @@ class BitcoinClient extends jsonrpc_client {
    *      "data" => string, block data
    *      "hash1" => string, formatted hash buffer for second hash
    *      "target" => string, little endian hash target
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @since 0.3.18
    */
   public function getwork($data = NULL) {
@@ -861,17 +861,17 @@ class BitcoinClient extends jsonrpc_client {
   }
 
   /**
-   * Return the current bitcoin address for receiving payments to $account.
+   * Return the current bitzeny address for receiving payments to $account.
    * The account and address will be created if $account doesn't exist.
    *
    * @param string $account Account name
-   * @return string Bitcoin address for $account
-   * @throws BitcoinClientException
+   * @return string BitZeny address for $account
+   * @throws BitZenyClientException
    * @since 0.3.18
    */
   public function getaccountaddress($account) {
     if (!$account || empty($account))
-      throw new BitcoinClientException("getaccountaddress requires an account");
+      throw new BitZenyClientException("getaccountaddress requires an account");
     return $this->query("getaccountaddress", $account);
   }
 
@@ -879,7 +879,7 @@ class BitcoinClient extends jsonrpc_client {
    * Return a recent hashes per second performance measurement.
    *
    * @return integer Hashes per second
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function gethashespersec() {
     return $this->query("gethashespersec");
@@ -890,13 +890,13 @@ class BitcoinClient extends jsonrpc_client {
    *
    * @param string $account
    * @return array
-   *    A simple array of Bitcoin addresses associated with $account, empty
+   *    A simple array of BitZeny addresses associated with $account, empty
    *    if the account doesn't exist.
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    */
   public function getaddressesbyaccount($account) {
     if (!$account || empty($account))
-      throw new BitcoinClientException("getaddressesbyaccount requires an account");
+      throw new BitZenyClientException("getaddressesbyaccount requires an account");
     return $this->query("getaddressesbyaccount", $account);
   }
 
@@ -915,15 +915,15 @@ class BitcoinClient extends jsonrpc_client {
    *    "confirmations" => Confirmations
    *    "txid" => Transaction ID
    *    "time" => Time of transaction
-   *    * @throws BitcoinClientException
+   *    * @throws BitZenyClientException
    */
   public function listtransactions($account, $count = 10, $from = 0) {
 	if (!$account) $account = "";
 
     if (!is_numeric($count) || $count < 0)
-      throw new BitcoinClientException('listtransactions requires a numeric count >= 0');
+      throw new BitZenyClientException('listtransactions requires a numeric count >= 0');
     if (!is_numeric($from) || $from < 0)
-      throw new BitcoinClientException('listtransactions requires a numeric from >= 0');
+      throw new BitZenyClientException('listtransactions requires a numeric from >= 0');
     return $this->query("listtransactions", $account, $count, $from);
   }
 
@@ -971,15 +971,15 @@ class BitcoinClient extends jsonrpc_client {
    * @param integer $minconf
    * @param string $comment
    * @return string Hexadecimal transaction ID on success.
-   * @throws BitcoinClientException
+   * @throws BitZenyClientException
    * @since 0.3.21
    * @author codler<github>
    */
   public function sendmany($fromAccount, $sendTo, $minconf = 1, $comment=NULL) {
     if (is_null($fromAccount))
-      throw new BitcoinClientException("sendmany requires an account");
+      throw new BitZenyClientException("sendmany requires an account");
     if (!is_numeric($minconf) || $minconf < 0)
-      throw new BitcoinClientException('sendmany requires a numeric minconf >= 0');
+      throw new BitZenyClientException('sendmany requires a numeric minconf >= 0');
 
     if (!$comment)
       return $this->query("sendmany", $fromAccount, $sendTo, $minconf);
