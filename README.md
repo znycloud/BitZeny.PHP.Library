@@ -25,12 +25,12 @@ Authors
 Credits
 -------
 
-litecoin-php based on nearly like for like:
+bitzenyd.php based on nearly like for like:
 * [Mike Gogulski](http://github.com/mikegogulski/bitcoin-php) -
   <http://github.com/mikegogulski/bitcoin-php/>
 
 
-litecoin-php incorporates code from:
+bitzeny.php incorporates code from:
 
 * [XML-RPC for PHP][XML-RPC-PHP] by Edd Dumbill (for JSON-RPC support)
 
