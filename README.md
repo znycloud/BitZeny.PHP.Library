@@ -1,4 +1,4 @@
-BitZeny-php
+BitZenyd.php
 ===========
 
 A [BitZeny] library for [PHP](http://www.php.net/).
