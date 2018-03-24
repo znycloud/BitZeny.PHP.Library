@@ -25,7 +25,7 @@
  */
 
 
-define("LITECOIN_ADDRESS_VERSION", "30");// this is a hex byte
+define("LITECOIN_ADDRESS_VERSION", "50");// this is a hex byte
 /**
  * Exception class for LitecoinClient
  *
