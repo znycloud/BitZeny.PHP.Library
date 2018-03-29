@@ -282,7 +282,7 @@ class BitZenyClient extends jsonrpc_client {
    * @access public
    * @throws BitZenyClientException
    */
-  public function __construct($scheme, $username, $password, $address = "localhost", $port = 8332, $certificate_path = '', $debug_level = 0) {
+  public function __construct($scheme, $username, $password, $address = "localhost", $port = 9252, $certificate_path = '', $debug_level = 0) {
     $scheme = strtolower($scheme);
     if ($scheme != "http" && $scheme != "https")
       throw new BitZenyClientException("Scheme must be http or https");
